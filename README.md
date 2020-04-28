@@ -10,7 +10,7 @@ The exercise template comes with a code file called `main.py`, which contains th
 
 Add a new class to the project called `PaymentCard`. This can be done by adding a file called `payment_card.py` in the `src` directory.
 
-First, create the `PaymentCard` object's constructor, which is passed the opening balance of the card, and which then stores that balance in the object's internal variable. Then, write the `__str__` method, which will return the card's balance in the form "The card has a balance of X euros".
+First, create the `PaymentCard` object's constructor, which is passed the opening balance of the card, and which then stores that balance in the object's internal variable. Then, write the `__str__` method, which will return the card's balance in the form "The card has a balance of X pounds".
 
 The following is the template of the `PaymentCard` class:
 
@@ -35,7 +35,7 @@ def main():
 The program should print the following:
 
 ```plaintext
-The card has a balance of 50.0 euros
+The card has a balance of 50.0 pounds
 ```
 
 ## Making transactions
@@ -70,9 +70,9 @@ def main():
 The program should print approximately the following:
 
 ```plaintext
-The card has a balance of 50.0 euros
-The card has a balance of 47.4 euros
-The card has a balance of 40.199999999999996 euros
+The card has a balance of 50.0 pounds
+The card has a balance of 47.4 pounds
+The card has a balance of 40.199999999999996 pounds
 ```
 
 ## Non-negative balance
@@ -96,9 +96,9 @@ def main():
 The program should print the following:
 
 ```plaintext
-The card has a balance 5.0 euros
-The card has a balance 0.40000000000000036 euros
-The card has a balance 0.40000000000000036 euros
+The card has a balance 5.0 pounds
+The card has a balance 0.40000000000000036 pounds
+The card has a balance 0.40000000000000036 pounds
 ```
 
 The second call to the method `eat_heartily` above did not affect the balance, since the balance would have otherwise become negative.
@@ -112,7 +112,7 @@ def add_money(self,amount):
     # write code here
 ```
 
-The purpose of the method is to increase the card's balance by the amount of money given as a parameter. However, the card's balance may not exceed 150 euros. As such, if the amount to be topped up exceeds this limit, the balance should, in any case, become exactly 150 euros.
+The purpose of the method is to increase the card's balance by the amount of money given as a parameter. However, the card's balance may not exceed 150 pounds. As such, if the amount to be topped up exceeds this limit, the balance should, in any case, become exactly 150 pounds.
 
 The following main program tests the class:
 
@@ -134,10 +134,10 @@ def main():
 The program should print the following:
 
 ```plaintext
-The card has a balance of 10.0 euros
-The card has a balance of 25.0 euros
-The card has a balance of 35.0 euros
-The card has a balance of 150.0 euros
+The card has a balance of 10.0 pounds
+The card has a balance of 25.0 pounds
+The card has a balance of 35.0 pounds
+The card has a balance of 150.0 pounds
 ```
 
 ## Topping up the card with a negative value
@@ -157,25 +157,25 @@ def main():
 The program should print the following:
 
 ```plaintext
-Paul: The card has a balance of 10.0 euros
-Paul: The card has a balance of 10.0 euros
+Paul: The card has a balance of 10.0 pounds
+Paul: The card has a balance of 10.0 pounds
 ```
 
 ## Multiple cards
 
 Write code in the `main` method of the exercise.py file that contains the following sequence of events:
 
-- Create Paul's card. The opening balance of the card is 20 euros
-- Create Matt's card. The opening balance of the card is 30 euros
+- Create Paul's card. The opening balance of the card is 20 pounds
+- Create Matt's card. The opening balance of the card is 30 pounds
 - Paul eats heartily
 - Matt eats affordably
 - The cards' values ​​are printed (each on its own line, with the cardholder name at the beginning of it)
-- Paul tops up 20 euros
+- Paul tops up 20 pounds
 - Matt eats heartily
 - The cards' values ​​are printed (each on its own line, with the cardholder name at the beginning of it)
 - Paul eats affordably
 - Paul eats affordably
-- Matt tops up 50 euros
+- Matt tops up 50 pounds
 - The cards' values ​​are printed (each on its own line, with the cardholder name at the beginning of it)
 
 The main program's template is as follows:
@@ -191,10 +191,10 @@ def main():
 The program should produce the following print output:
 
 ```plaintext
-Paul: The card has a balance of 15.4 euros
-Matt: The card has a balance of 27.4 euros
-Paul: The card has a balance of 35.4 euros
-Matt: The card has a balance of 22.799999999999997 euros
-Paul: The card has a balance of 30.199999999999996 euros
-Matt: The card has a balance of 72.8 euros
+Paul: The card has a balance of 15.4 pounds
+Matt: The card has a balance of 27.4 pounds
+Paul: The card has a balance of 35.4 pounds
+Matt: The card has a balance of 22.799999999999997 pounds
+Paul: The card has a balance of 30.199999999999996 pounds
+Matt: The card has a balance of 72.8 pounds
 ```
