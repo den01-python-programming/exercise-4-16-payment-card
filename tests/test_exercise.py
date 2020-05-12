@@ -1,7 +1,7 @@
 import pytest
 from src.payment_card import PaymentCard
 
-def test_exercise():
+def test_exercise(capsys):
     card = PaymentCard(30)
     print(card)
 
