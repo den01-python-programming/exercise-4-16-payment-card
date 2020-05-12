@@ -50,7 +50,7 @@ def eat_heartily(self):
     # write code here
 ```
 
-The method `eat_affordably` should reduce the card's balance by € 2.60, and the method `eat_heartily` should reduce the card's balance by € 4.60.
+The method `eat_affordably` should reduce the card's balance by £2.60, and the method `eat_heartily` should reduce the card's balance by £4.60.
 
 The following main program tests the class:
 
