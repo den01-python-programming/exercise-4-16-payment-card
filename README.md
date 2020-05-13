@@ -1,200 +1,205 @@
-# Exercise 4.16 Payment Card
+# Exercise 5.8 Card payments
 
-In this exercise series, a class called `PaymentCard` is created which aims to mimic a payment process.
+## "Dumb" payment card
 
-## The class template
+In a previous part we created a class called PaymentCard. The card had methods for eating affordably and heartily, and also for adding money to the card.
 
-The project will include two code files:
+However, there was a problem with the PaymentCard class that is implemented in this fashion. The card knew the prices of the different lunches, and therefore was able to decrease the balance by the proper amount. What about if the prices are raised? Or new items are added to the list of offered products? A change in the pricing would mean that all the existing cards would have to be replaced with new cards that are aware of the new prices.
 
-The exercise template comes with a code file called `main.py`, which contains the `main` method.
+An improved solution is to make the cards "dumb" unaware of the prices and products that are sold, and only keeping track of their balance. All the intelligence is better placed in separate objects, payment terminals.
 
-Add a new class to the project called `PaymentCard`. This can be done by adding a file called `payment_card.py` in the `src` directory.
-
-First, create the `PaymentCard` object's constructor, which is passed the opening balance of the card, and which then stores that balance in the object's internal variable. Then, write the `__str__` method, which will return the card's balance in the form "The card has a balance of X pounds".
-
-The following is the template of the `PaymentCard` class:
-
+Let's first implement the "dumb" version of the PaymentCard. The card only has methods for asking for the balance, adding money, and taking money. Complete the method `def take_money(self, amount)` in the class below (and found in the exercise template), using the following as a guide:
 
 ```python
 class PaymentCard:
-    def __init__(self, opening_balance):
-        # write code here
+
+    def __init__(self, balance):
+        self.balance = balance
+
+    def balance(self):
+        return self.balance
+
+    def add_money(self, increase):
+        self.balance = self.balance + increase
+
+    def take_money(self, amount):
+        # implement the method so that it only takes money from the card if
+        # the balance is at least the amount parameter.
+        # returns true if successful and false otherwise
+```
+
+Test main program:
+
+```python
+def main():
+    petesCard = PaymentCard(10)
+
+    print("money " + str(petesCard.balance()))
+    was_successful = petesCard.take_money(8)
+    print("successfully withdrew: " + str(was_successful))
+    print("money " + str(petesCard.balance()))
+
+    was_successful = petesCard.take_money(4)
+    print("successfully withdrew: " + str(was_successful))
+    print("money " + str(petesCard.balance()))
+}
+```
+
+The output should be like below
+
+```plaintext
+money 10.0
+successfully took: true
+money 2.0
+successfully took: false
+money 2.0
+```
+
+## Payment terminal and cash
+
+When visiting a student cafeteria, the customer pays either with cash or with a payment card. The cashier uses a payment terminal to charge the card or to process the cash payment. First, let's create a terminal that's suitable for cash payments.
+
+The outline of the payment terminal. The comments inside the methods tell the wanted functionality:
+
+```python
+class PaymentTerminal:
+
+    def __init__(self):
+        self.money = 0 # amount of cash
+        self.affordable_meals = 0 # number of sold affordable meals
+        self.hearty_meals = 0 # number of sold hearty meals
+
+    def eat_affordably(self,payment):
+        # an affordable meal costs 2.50 pounds
+        # increase the amount of cash by the price of an affordable mean and return the change
+        # if the payment parameter is not large enough, no meal is sold and the method should return the whole payment
+
+    def eat_heartily(self,payment):
+        # a hearty meal costs 4.30 pounds
+        # increase the amount of cash by the price of a hearty mean and return the change
+        # if the payment parameter is not large enough, no meal is sold and the method should return the whole payment
 
     def __str__(self):
-        # write code here
+        return "money: " + str(self.money) + ", number of sold afforable meals: " + str(self.affordable_meals) + ", number of sold hearty meals: " + str(self.hearty_meals)
 ```
 
-The following main program tests the class:
+The terminal starts with 1000 pounds in it. Implement the methods so they work correctly, using the basis above and the example prints of the main program below.
 
 ```python
 def main():
-    card = PaymentCard(50)
-    print(card)
-```
+    exact_amount = PaymentTerminal()
 
-The program should print the following:
+    change = exact_amount.eat_affordably(10)
+    print("remaining change " + str(change))
+
+    exact_amount.eat_affordably(5)
+    print("remaining change " + str(change))
+
+    exact_amount.eat_heartily(4.3)
+    print("remaining change " + str(change))
+
+    print(exact_amount)
+```
 
 ```plaintext
-The card has a balance of 50.0 pounds
+remaining change: 7.5
+remaining change: 2.5
+remaining change: 0.0
+money: 1009.3, number of sold afforable meals: 2, number of sold hearty meals: 1
 ```
 
-## Making transactions
+## Card payments
 
-Complement the `PaymentCard` class with the following methods:
+Let's extend our payment terminal to also support card payments. We are going to create new methods for the terminal. It receives a payment card as a parameter, and decreases its balance by the price of the meal that was purchased. Here are the outlines for the methods, and instructions for completing them.
 
 ```python
-def eat_affordably(self):
-    # write code here
+class PaymentTerminal:
+    # ...
 
-def eat_heartily(self):
-    # write code here
+    def eat_affordably(self, card):
+        # an affordable meal costs 2.50 pounds
+        # if the payment card has enough money, the balance of the card is decreased by the price, and the method returns true
+        # otherwise false is returned
+
+    def eat_heartily(self, card):
+        # a hearty meal costs 4.30 pounds
+        # if the payment card has enough money, the balance of the card is decreased by the price, and the method returns true
+        # otherwise false is returned
+
+    # ...
 ```
 
-The method `eat_affordably` should reduce the card's balance by £2.60, and the method `eat_heartily` should reduce the card's balance by £4.60.
+**NB:** card payments don't increase the amount of cash in the register.
 
-The following main program tests the class:
+**Hint:** Try using a `if type(payment) == float or type(payment) == int:` statement to work out whether the customer pays by card or cash. Handle each case differently.
+
+Below is a main program to test the classes, and the output that is desired:
 
 ```python
 def main():
-    card = PaymentCard(50)
-    print(card)
+    exact_amount = PaymentTerminal()
 
-    card.eat_affordably()
-    print(card)
+    change = exact_amount.eat_affordably(10)
+    print("remaining change: " + str(change))
 
-    card.eat_heartily()
-    card.eat_affordably()
-    print(card)
+    annes_card = PaymentCard(7)
+
+    was_successful = exact_amount.eat_heartily(annes_card)
+    print("there was enough money: " + str(was_successful))
+    was_successful = exact_amount.eat_heartily(annes_card)
+    print("there was enough money: " + str(was_successful))
+    was_successful = exact_amount.eat_affordably(annes_card)
+    print("there was enough money: " + str(was_successful))
+
+    print(exact_amount)
 ```
-
-The program should print approximately the following:
 
 ```plaintext
-The card has a balance of 50.0 pounds
-The card has a balance of 47.4 pounds
-The card has a balance of 40.199999999999996 pounds
+remaining change: 7.5
+there was enough money: true
+there was enough money: false
+there was enough money: true
+money: 1002.5, number of sold afforable meals: 2, number of sold hearty meals: 1
 ```
 
-## Non-negative balance
+## Adding money
 
-What happens if the card runs out of money? It doesn't make sense in this case for the balance to turn negative. Change the methods `eat_affordably` and `eat_heartily` so that they don't reduce the balance should it turn negative.
+Let's create a method for the terminal that can be used to add money to a payment card. Recall that the payment that is received when adding money to the card is stored in the register. The basis for the method:
 
-The following main program tests the class:
+```python
+def add_money_to_card(self, card, sum):
+    # ...
+```
+
+A main program to illustrate:
 
 ```python
 def main():
-    card = PaymentCard(5)
-    print(card)
+    exact_amount = PaymentTerminal()
+    print(exact_amount)
 
-    card.eat_heartily()
-    print(card)
+    annes_card = PaymentCard(2)
 
-    card.eat_heartily()
-    print(card)
+    print("amount of money on the card is " + str(annes_card.balance()) + " pounds")
+
+    was_successful = exact_amount.eat_heartily(annes_card)
+    print("there was enough money: " + str(was_successful))
+
+    exact_amount.add_money_to_card(annes_card, 100)
+
+    was_successful = exact_amount.eat_heartily(annes_card)
+    print("there was enough money: " + str(was_successful))
+
+    print("amount of money on the card is " + str(annes_card.balance()) + " pounds")
+
+    print(exact_amount)
 ```
-
-The program should print the following:
 
 ```plaintext
-The card has a balance 5.0 pounds
-The card has a balance 0.40000000000000036 pounds
-The card has a balance 0.40000000000000036 pounds
-```
-
-The second call to the method `eat_heartily` above did not affect the balance, since the balance would have otherwise become negative.
-
-## Topping up the card
-
-Add the following method to the `PaymentCard` class:
-
-```python
-def add_money(self,amount):
-    # write code here
-```
-
-The purpose of the method is to increase the card's balance by the amount of money given as a parameter. However, the card's balance may not exceed 150 pounds. As such, if the amount to be topped up exceeds this limit, the balance should, in any case, become exactly 150 pounds.
-
-The following main program tests the class:
-
-```python
-def main():
-    card = PaymentCard(10)
-    print(card)
-
-    card.add_money(15)
-    print(card)
-
-    card.add_money(10)
-    print(card)
-
-    card.add_money(200)
-    print(card)
-```
-
-The program should print the following:
-
-```plaintext
-The card has a balance of 10.0 pounds
-The card has a balance of 25.0 pounds
-The card has a balance of 35.0 pounds
-The card has a balance of 150.0 pounds
-```
-
-## Topping up the card with a negative value
-
-Change the `add_money` method further, so that if there is an attempt to top it up with a negative amount, the value on the card will not change.
-
-The following main program tests the class:
-
-```python
-def main():
-    card = PaymentCard(10)
-    print("Paul: " + str(card))
-    card.add_money(-15)
-    print("Paul: " + str(card))
-```
-
-The program should print the following:
-
-```plaintext
-Paul: The card has a balance of 10.0 pounds
-Paul: The card has a balance of 10.0 pounds
-```
-
-## Multiple cards
-
-Write code in the `main` method of the exercise.py file that contains the following sequence of events:
-
-- Create Paul's card. The opening balance of the card is 20 pounds
-- Create Matt's card. The opening balance of the card is 30 pounds
-- Paul eats heartily
-- Matt eats affordably
-- The cards' values ​​are printed (each on its own line, with the cardholder name at the beginning of it)
-- Paul tops up 20 pounds
-- Matt eats heartily
-- The cards' values ​​are printed (each on its own line, with the cardholder name at the beginning of it)
-- Paul eats affordably
-- Paul eats affordably
-- Matt tops up 50 pounds
-- The cards' values ​​are printed (each on its own line, with the cardholder name at the beginning of it)
-
-The main program's template is as follows:
-
-```python
-def main():
-    pauls_card = PaymentCard(20)
-    matts_card = PaymentCard(30)
-
-    # write code here
-```
-
-The program should produce the following print output:
-
-```plaintext
-Paul: The card has a balance of 15.4 pounds
-Matt: The card has a balance of 27.4 pounds
-Paul: The card has a balance of 35.4 pounds
-Matt: The card has a balance of 22.799999999999997 pounds
-Paul: The card has a balance of 30.199999999999996 pounds
-Matt: The card has a balance of 72.8 pounds
+money: 1000.0, number of sold afforable meals: 0, number of sold hearty meals: 0
+amount of money on the card is 2.0 pounds
+there was enough money: false
+there was enough money: true
+amount of money on the card is 97.7 pounds
+money: 1100.0, number of sold afforable meals: 0, number of sold hearty meals: 1
 ```
